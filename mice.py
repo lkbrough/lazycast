@@ -36,7 +36,7 @@ hostname = socket.gethostname()
 # hostname and ipstr should be the those of the machine running ./project.py
 ipstr = ''
 # ipstr = '192.168.1.5'
-concurrent = 0
+concurrent = 1
 # 0: Accept MICE connection only
 # 1: Accept MICE and wifi p2p connections
 
