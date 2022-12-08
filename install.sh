@@ -14,4 +14,6 @@ sudo apt install network-manager network-manager-gnome openvpn openvpn-systemd-r
 sudo apt purge dhcpcd5
 sudo systemctl disable systemd-resolved
 
+sudo apt autoremove
+
 sudo reboot

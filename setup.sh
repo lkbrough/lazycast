@@ -9,3 +9,5 @@ make
 
 cd ~/lazycast
 make
+
+cp start-windows-projector ~
