@@ -9,4 +9,7 @@ sudo systemctl disable systemd-resolved
 
 sudo apt install avahi-utils
 
+wget https://download.remotepc.com/downloads/rpc/310320/remotepc-host-pi.deb
+sudo apt install ./remotepc-host-pi.deb
+
 sudo reboot
