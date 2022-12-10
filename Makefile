@@ -1,4 +1,4 @@
-SUBDIRS := $(filter $(wildcard images/*.png),$(wildcard */.))
+SUBDIRS := $(wildcard */.)
 
 all: $(SUBDIRS)
 $(SUBDIRS):
