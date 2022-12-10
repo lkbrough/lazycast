@@ -1,1 +1,2 @@
-all: echo "In images, doing nothing"
+all: 
+	echo "In images, doing nothing"
