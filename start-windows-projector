@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-lxterminal -e "unclutter -idle 0" &
-lxterminal -e "cd ~/lazycast && sudo ./mice.py"
+lxterminal -e "unclutter -idle 3" &
+lxterminal -e "cd ~/lazycast && sudo ./mice.sh"
