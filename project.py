@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 """
 	This software is part of lazycast, a simple wireless display receiver for Raspberry Pi
 	Copyright (C) 2020 Hsun-Wei Cho
@@ -18,24 +18,22 @@ import socket
 from time import sleep
 import os
 import uuid
-
-
 commands = {}
-commands['01'] = 'SOURCE_READY'
-commands['02'] = 'STOP_PROJECTION'
-commands['03'] = 'SECURITY_HANDSHAKE'
-commands['04'] = 'SESSION_REQUEST'
-commands['05'] = 'PIN_CHALLENGE'
-commands['06'] = 'PIN_RESPONSE'
+commands[1] = 'SOURCE_READY'
+commands[2] = 'STOP_PROJECTION'
+commands[3] = 'SECURITY_HANDSHAKE'
+commands[4] = 'SESSION_REQUEST'
+commands[5] = 'PIN_CHALLENGE'
+commands[6] = 'PIN_RESPONSE'
 
 types = {}
-types['00'] = 'FRIENDLY_NAME'
-types['02'] = 'RTSP_PORT'
-types['03'] = 'SOURCE_ID'
-types['04'] = 'SECURITY_TOKEN'
-types['05'] = 'SECURITY_OPTIONS'
-types['06'] = 'PIN_CHALLENGE'
-types['07'] = 'PIN_RESPONSE_REASON'
+types[0] = 'FRIENDLY_NAME'
+types[2] = 'RTSP_PORT'
+types[3] = 'SOURCE_ID'
+types[4] = 'SECURITY_TOKEN'
+types[5] = 'SECURITY_OPTIONS'
+types[6] = 'PIN_CHALLENGE'
+types[7] = 'PIN_RESPONSE_REASON'
 
 if os.path.exists('uuid.txt'):
 	uuidfile = open('uuid.txt','r')
@@ -49,12 +47,12 @@ else:
 	uuidfile.close()
 
 hostname = socket.gethostname() 
-print 'The hostname of this machine is: '+hostname
+print('The hostname of this machine is: '+hostname)
 
-print uuidstr
+print(uuidstr)
 
 dnsstr = 'avahi-publish-service '+hostname+' _display._tcp 7250 container_id={'+uuidstr+'}'
-print dnsstr
+print(dnsstr)
 os.system(dnsstr+' &')
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -73,35 +71,38 @@ while True:
 	while True:
 		data = conn.recv(1024)
 		# print data
-		print data.encode('hex')
+		print(data.hex())
 
-		if data == '':
+		if len(data) == 0:
 			break
 
-		size = int(data[0:2].encode('hex'),16)
-		version = data[2].encode('hex')
-		command = data[3].encode('hex')
+		
+		data = data.hex()
+		size = int(data[0:4],16)
+		version = int(data[4:6])
+		command = int(data[6:8])
 
 		print (size,version,command)
 		
 		messagetype = commands[command]
-		print messagetype
+		print(messagetype)
 
 		if messagetype == 'SOURCE_READY':
 			os.system('./d2.py '+sourceip+' &')
 
 
-		i = 4
+		i = 8
 		while i<size:
-			tlvtypehex = data[i].encode('hex')
-			valuelen = int(data[i+1:i+3].encode('hex'),16)
-			value = data[i+3:i+3+valuelen]
-			i = i+3+valuelen
-			print (tlvtypehex,valuelen)
+			tlvtypehex = int(data[i:i+2])
+			valuelen = int(data[i+2:i+6],16)
+			value = data[i+6:i+6+2*valuelen]
+			i = i+6+2*valuelen
+			print(tlvtypehex,valuelen)
 			tlvtype = types[tlvtypehex]
-			print tlvtype,
+			print(tlvtype)
 			if tlvtype == 'FRIENDLY_NAME':
-				print value
+				print(value)
+
 
 
 		# conn.send(data)
@@ -109,4 +110,3 @@ while True:
 	conn.close()
 
 sock.close()
-
