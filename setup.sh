@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
-sudo apt install libx11-dev libasound2-dev libavformat-dev libavcodec-dev
+sudo apt install avahi-utils -y
+
+sudo apt-get install unclutter -y
+
+wget https://download.remotepc.com/downloads/rpc/310320/remotepc-host-pi.deb
+sudo apt install ./remotepc-host-pi.deb -y
+
+sudo apt install libx11-dev libasound2-dev libavformat-dev libavcodec-dev -y
 
 cd /opt/vc/src/hello_pi/libs/ilclient/
-make
+sudo make
 cd /opt/vc/src/hello_pi/hello_video
-make
+sudo make
 
 cd ~/lazycast
 make
